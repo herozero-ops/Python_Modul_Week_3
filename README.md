@@ -1,43 +1,30 @@
-# Python_Modul_Week_3
 
-### Question 1: Task Manager Application
 
-Project Description: In this assignment, you will create a task manager application using the Python programming language. This application will allow users to add, complete, delete, and list their tasks.
+def delete_task(tasks, task_id, tasks_file):
+    
+    task_found = False
+    for task in tasks:
+        if task.get("id") == task_id:
+            task_found = True
+            task["status"] = "Deleted"
+            task["id"] = None
+            break
 
-##### Requirements:
+    if not task_found:
+        print("Task not found")
+        return False
 
-1- Tasks will be stored in a Python list and each task will be represented as a dictionary. Each task must have the following properties:
 
-* Sequence Number (Automatically assigned)
+    for task in tasks:
+        if task.get("id") and task["id"] > task_id:
+            task["id"] -= 1
 
-* Task Name
+    save_file(tasks_file, tasks)
 
-* Status (Completed, Pending, or Deleted)
+    print(f"Task with ID {task_id} has been successfully deleted.")
+    return True
 
-2- Operations that the user can perform:
-
-* Add a new task
-
-* Complete a task
-
-* Delete a task
-
-* List completed tasks
-
-* List all tasks with their status
-
-* Exit
-
-3- Tasks should automatically receive a sequence number in the order they are added.
-
-4- New tasks should be saved in place of the numbers of deleted tasks.
-
-5- When listing tasks, they should be sorted by their sequence number.
-
-6- Appropriate feedback should be given to the user after each operation. For example, when a new task is added, they should see a message indicating that the task has been added.
-
-## Bonus Question 1
-[HACKERRANK: FIND DIGITS](https://www.hackerrank.com/challenges/find-digits/problem)
-
-## Bonus Question 2
-[HACKERRANK: CAPITALIZE](https://www.hackerrank.com/challenges/capitalize/problem)
+def save_file(filename, tasks):
+    with open(filename, "w") as file:
+        import json
+        json.dump(tasks, file, indent=4)
